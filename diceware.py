@@ -1,6 +1,5 @@
 import random
-
-NUMBER_OF_WORDS = 7
+import sys
 
 
 def generatekey():
@@ -8,11 +7,21 @@ def generatekey():
     return ''.join([str(rng.randint(1, 6)) for i in range(5)])
 
 
-def generatephrase():
+def generatephrase(number_of_words):
     with open('beale.wordlist.txt') as wordlist:
         words = {entry.split()[0]: entry.split()[1] for entry in wordlist}
 
-    return ' '.join([words[generatekey()] for i in range(NUMBER_OF_WORDS)])
+    return ' '.join([words[generatekey()] for i in range(number_of_words)])
+
+
+def main():
+    try:
+        number_of_words = int(sys.argv[1])
+    except (ValueError, IndexError):
+        print('Usage: python diceware.py NUMBER_OF_WORDS')
+        sys.exit(1)
+
+    print(generatephrase(number_of_words))
 
 if __name__ == "__main__":
-    print(generatephrase())
+    main()
